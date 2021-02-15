@@ -26,21 +26,21 @@ const EmployeeForm = (props) => {
             dependents: employees[props.index].dependents
         }
         :{
-            name: null,
-            cpf: null, 
-            salary: null,
-            discount: null,
-            dependents: null
+            name: "",
+            cpf: "", 
+            salary: "",
+            discount: "",
+            dependents: ""
         }
     );
     
     function resetInputsValue(){
         setInputs({
-            name: null,
-            cpf: null, 
-            salary: null,
-            discount: null,
-            dependents: null
+            name: "",
+            cpf: "", 
+            salary: "",
+            discount: "",
+            dependents: ""
         })
     }
 
@@ -78,7 +78,7 @@ const EmployeeForm = (props) => {
         
         name: yup.string()
         .required("Nome é obrigatório")
-        .matches(/^[a-z ,.'-]+$/i, "Nome inválido")
+        .matches(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u, "Nome inválido")
         .min(3, "O nome deve ter no mínimo 3 caracteres"),
         
         cpf: yup.string()
@@ -118,6 +118,7 @@ const EmployeeForm = (props) => {
                         name="name"
                         onChange={e => updateFormValue(e)}
                         ref={register}
+                        data-testid="form-field"
                     />
                       
                 </div>

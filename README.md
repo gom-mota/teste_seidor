@@ -1,17 +1,22 @@
-# Teste Técnico Prático - SEIDOR
+# Teste Técnico Prático SEIDOR
 
-## Tópicos
-* [Capturas de Tela](#capturas-de-tela)
+* [Demonstração](#demonstração)
+* [Pré-requisitos](#pré-requisitos)
 * [Executar o projeto](#executar-o-projeto)
 
-## Capturas de tela
+## Demonstração
 <p align='center'>  
-  <img src='src/assets/home_screenshot.png'/>
-  <img src='src/assets/employee_screenshot.png'/>
- 
+  <img src='src/assets/images/project_usability.gif'/> 
 </p>
- <img src='src/assets/addEmployee_screenshot.png' width=420/>
-  <img src='src/assets/updateEmployee_screenshot.png' width=420/>
+
+## Pré-requisitos
+
+Verifique se os requisitos abaixo estão instalados antes de executar o projeto.
+
+Clique no item para saber mais sobre o processo de instalação.
+
+* [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+* [Nodejs](https://nodejs.org/pt-br/download/package-manager/)
 
 ## Executar o projeto
 ```bash
@@ -24,7 +29,7 @@ $ cd teste_seidor
 # Instale as dependências.
 $ npm install
 
-# Iniciar o projeto em modo de desenvolvimento.
+# Iniciar o projeto.
 $ npm start
 
 # irá abrir uma página no navegador.

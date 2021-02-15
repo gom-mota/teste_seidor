@@ -3,8 +3,10 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import SimpleModal from '../../Modal';
 import RegisterForm from '../Form';
+import Table from '../../Table';
 
-import { Container } from './styles';
+import { Action, Container } from './styles';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const EmployeeTable = () => {
 
@@ -21,36 +23,38 @@ const EmployeeTable = () => {
     }
 
     return (
-        <>
-            <table>
+        <Container>
+            <Table>
                 <tr>
                     <th>Nome</th>
                     <th>CPF</th>
                     <th>Salário</th>
                     <th>Desconto</th>
                     <th>Dependentes</th>
-                    <th>Ação</th>
+                    <th></th>
                 </tr>
                 {
                     employees.map((employee,index)=>(
-                        <tr>
-                            <td>{employee.name}</td>
-                            <td>{employee.cpf}</td>
-                            <td>{employee.salary}</td>
-                            <td>{employee.discount}</td>
-                            <td>{employee.dependents}</td>
-                            <td>
-                                <button type="button" onClick={()=>deleteEmployee(index)}>
-                                    Excluir
-                                </button>
-                                <button type="button" onClick={()=> {dispatch({type: 'TOGGLE_MODAL_UPDATE_EMPLOYEE'});setCurrentIndex(index)}}>
-                                    Editar
-                                </button>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>{employee.name}</td>
+                                <td>{employee.cpf}</td>
+                                <td>{employee.salary}</td>
+                                <td>{employee.discount}</td>
+                                <td>{employee.dependents}</td>
+                                <td>
+                                    <Action>
+                                        <a className="delete" onClick={()=>deleteEmployee(index)}>
+                                            <FaTrash />
+                                        </a>
+                                        <a className="edit" onClick={()=> {dispatch({type: 'TOGGLE_MODAL_UPDATE_EMPLOYEE'});setCurrentIndex(index)}}>
+                                            <FaEdit />
+                                        </a>
+                                    </Action>
+                                </td>
+                            </tr>
                     ))
                 }
-            </table>
+            </Table>
 
             {
                 /* Checks if the modal of updateEmployee is visible */
@@ -60,7 +64,7 @@ const EmployeeTable = () => {
                     </SimpleModal>
                 :null
             }
-        </>
+        </Container>
     )
 }
 

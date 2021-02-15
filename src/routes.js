@@ -1,6 +1,6 @@
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-import Home from './pages/Home';
+import IRFF from './pages/IRRF';
 import Employee from './pages/Employee';
 import NotFound from './pages/NotFound';
 
@@ -8,7 +8,7 @@ const Routes = () =>{
     return(
         <BrowserRouter>
             <Switch>
-                <Route path="/" exact component={Home} />
+                <Route path="/" exact component={IRFF} />
                 <Route path="/employee" exact component={Employee} />
                 <Route component={NotFound} />
             </Switch>        

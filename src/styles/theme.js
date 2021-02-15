@@ -1,18 +1,33 @@
 const accent = {
-    buttonPrimary: "#f00"
+    primary: '#095786',
+    buttonPrimary: '#212121'
+}
+const fonts = {
+    primary: 'Poppins, sans-serif',
+    light: 300,
+    regular: 400,
+    medium: 500,
+    bold: 700,
+    extraBold: 800,
 }
 const sizes = {
-    buttonNormal: '6px 20px',
+    buttonNormal: '10px 26px',
     borderRadius: '20px',
+    textButton: '16px'
+}
+const effects = {
+    shadow: '40px 40px 80px #00000040'
 }
 export const MainTheme = {
     colors: {        
         accent: accent,
-        background: "#eee",
+        background: "#ffffff",
         text: "#212121",
-        textButton: "#fff",
+        textButton: "#ffffff",
     },
+    fonts: fonts,
     sizes: sizes,
+    effects: effects
 }
 
 const theme = MainTheme;

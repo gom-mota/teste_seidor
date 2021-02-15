@@ -13,18 +13,25 @@ export const Container = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #000000;
+    color: ${props => props.theme.colors.text};
+
+    h1{
+        font-size: 22px;
+        text-align: center;
+    }
     
     
     .container {
-        background-color: #ffffff;
+        background-color: ${props => props.theme.colors.background};
         width: 85%;
-        max-width: 500px;
-        height: 275px;
+        max-width: 620px;
+        height: 560px;
         border-radius: 20px;
         
 
         .content {
+            margin-top: 20px;
+
             div{
                 display: flex;
                 flex-direction: column;

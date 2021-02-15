@@ -2,13 +2,25 @@ import React, { useState } from "react";
 
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonPrimary } from '../../Button';
+import { FaCheck } from 'react-icons/fa';
 
-import { Container } from './styles';
+import { ContainerButton, TextInput } from './styles';
 
 const EmployeeForm = (props) => {
 
     const employees = useSelector(state => state.employeeReducer.data);    
     const dispatch = useDispatch();
+
+    function verifyInput(){
+        let mode = false;
+        if(inputs.name!="" && inputs.cpf!="" && inputs.salary!="" && inputs.discount!="" && inputs.dependents!="" || inputs.dependents=="0"){
+            mode = true;
+        }
+        else{
+            mode = false;
+        }
+        return mode;
+    }
 
     function resetInputsValue(){
         setInputs({
@@ -71,46 +83,53 @@ const EmployeeForm = (props) => {
     
     return (
         <>
+        {props.action=="addEmployee"?<h1>Cadastrar Funcionário</h1>:<h1>Atualizar Dados</h1>}
+        
             <form>
                 <div>
                     <label>Nome</label>
-                    <input
+                    <TextInput
                         type="text"
                         value={inputs.name}
                         name="name"
                         onChange={e => updateFormValue(e)}
+                        required
                     />
                 </div>
                 <div>
                     <label>CPF</label>
-                    <input
+                    <TextInput
+                        placeholder="000.000.000-00"
                         type="text"
                         value={inputs.cpf}
                         name="cpf"
                         onChange={e => updateFormValue(e)}
+                        required
                     />
                 </div>
                 <div>
                     <label>Salário</label>
-                    <input
+                    <TextInput
                         type="text"
                         value={inputs.salary}
                         name="salary"
                         onChange={e => updateFormValue(e)}
+                        required
                     />
                 </div>
                 <div>
                     <label>Desconto</label>
-                    <input
+                    <TextInput
                         type="text"
                         value={inputs.discount}
                         name="discount"
                         onChange={e => updateFormValue(e)}
+                        required
                     />
                 </div>
                 <div>
                     <label>Dependentes</label>
-                    <input
+                    <TextInput
                         type="text"
                         value={inputs.dependents}
                         name="dependents"
@@ -118,15 +137,21 @@ const EmployeeForm = (props) => {
                     />
                 </div>
             </form>
+            <ContainerButton>
             {props.action=='updateEmployee'?
-                <ButtonPrimary onClick={updateEmployee}>
-                    Atualizar
+                <ButtonPrimary onClick={updateEmployee} disabled={verifyInput()==true?false:true}>
+                    <FaCheck /> Atualizar
                 </ButtonPrimary>
                 :
-                <ButtonPrimary onClick={addEmployee}>
-                    Cadastrar
+                <ButtonPrimary onClick={addEmployee} disabled={verifyInput()==true?false:true}>
+                    <FaCheck /> Cadastrar
                 </ButtonPrimary>
             }
+            <div>
+                {verifyInput()==false?<p>Preencha todos os dados</p>:""}
+            </div>
+            
+            </ContainerButton>
         </>
     )
 }

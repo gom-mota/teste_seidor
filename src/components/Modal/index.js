@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { Container } from './styles.js'
+import { Container } from './styles.js';
+
+import { FaTimes } from 'react-icons/fa';
 
 const SimpleModal = ({ id='modal', onClose=() => {}, children}) => {
   
@@ -13,7 +15,7 @@ const SimpleModal = ({ id='modal', onClose=() => {}, children}) => {
 			<div id={id} className="modal" onClick={handleOutsideClick}>
 				<div className="container">
 					
-					<div className="close" onClick={onClose} >X</div>
+					<div className="close" onClick={onClose} ><FaTimes /></div>
 					<div className="content">
 						{children}
 					</div>

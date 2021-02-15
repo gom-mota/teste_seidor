@@ -2,7 +2,7 @@ import { Button, ButtonTab } from './styles';
 
 const ButtonPrimary = (props) => {
     return (
-            <Button size={props.size} onClick={props.onClick} className={props.className=="active"?"active":""} disabled={props.disabled}>
+            <Button size={props.size} onClick={props.onClick} className={props.className=="active"?"active":""} type={props.type}>
                 {props.children}
             </Button>
     )

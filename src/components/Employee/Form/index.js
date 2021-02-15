@@ -4,44 +4,43 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ButtonPrimary } from '../../Button';
 import { FaCheck } from 'react-icons/fa';
 
-import { ContainerButton, TextInput } from './styles';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+import { Form, TextInput } from './styles';
 
 const EmployeeForm = (props) => {
 
     const employees = useSelector(state => state.employeeReducer.data);    
-    const dispatch = useDispatch();
+    const dispatch = useDispatch();   
 
-    function verifyInput(){
-        let mode = false;
-        if(inputs.name!="" && inputs.cpf!="" && inputs.salary!="" && inputs.discount!="" && inputs.dependents!="" || inputs.dependents=="0"){
-            mode = true;
+    const [inputs, setInputs] = useState(
+        props.action=="updateEmployee"?
+        {
+            // Fill inputs with values of the selected employee
+            name: employees[props.index].name,
+            cpf: employees[props.index].cpf, 
+            salary: employees[props.index].salary,
+            discount: employees[props.index].discount,
+            dependents: employees[props.index].dependents
         }
-        else{
-            mode = false;
+        :{
+            name: null,
+            cpf: null, 
+            salary: null,
+            discount: null,
+            dependents: null
         }
-        return mode;
-    }
-
+    );
+    
     function resetInputsValue(){
         setInputs({
-            name: "",
-            cpf: "", 
-            salary: "",
-            discount: "",
-            dependents: ""
-        })
-    }
-
-    function updateEmployee() {
-        dispatch({ 
-            type: 'UPDATE_EMPLOYEE',
-            employee: {...inputs},
-            index: props.index
-        })
-
-        // Hide modal when updateEmployee
-        dispatch({
-            type: 'TOGGLE_MODAL_UPDATE_EMPLOYEE'
+            name: null,
+            cpf: null, 
+            salary: null,
+            discount: null,
+            dependents: null
         })
     }
 
@@ -58,100 +57,141 @@ const EmployeeForm = (props) => {
         })
     }
 
-    const [inputs, setInputs] = useState(
-        props.action=="updateEmployee"?
-        {
-            // Fill inputs with values of the selected employee
-            name: employees[props.index].name,
-            cpf: employees[props.index].cpf, 
-            salary: employees[props.index].salary,
-            discount: employees[props.index].discount,
-            dependents: employees[props.index].dependents
-        }
-        :{
-            name: "",
-            cpf: "", 
-            salary: "",
-            discount: "",
-            dependents: ""
-        }
-    );
+    function updateEmployee() {
+        dispatch({ 
+            type: 'UPDATE_EMPLOYEE',
+            employee: {...inputs},
+            index: props.index
+        })
+
+        // Hide modal when updateEmployee
+        dispatch({
+            type: 'TOGGLE_MODAL_UPDATE_EMPLOYEE'
+        })
+    }    
 
     const updateFormValue = ({ target: { name, value } }) => {
         setInputs(inputObj => ({ ...inputObj, [name]: value }))
     }
+
+    const schema = yup.object().shape({
+        
+        name: yup.string()
+        .required("Nome é obrigatório")
+        .matches(/^[a-z ,.'-]+$/i, "Nome inválido")
+        .min(3, "O nome deve ter no mínimo 3 caracteres"),
+        
+        cpf: yup.string()
+        .required("CPF é obrigatório")
+        .matches(/(\d{3}).(\d{3}).(\d{3})-(\d{2})/, "CPF inválido"),
+        
+        salary: yup.string()
+        .required("Salário obrigatório")
+        .matches(/^[\d,.?!]+$/, "Salário inválido"),
+        
+        discount: yup.string()
+        .required("Desconto obrigatório")
+        .matches(/^[\d,.?!]+$/, "Desconto inválido"),
+       
+        dependents: yup.number()
+        .required("Dependentes obrigatório")
+        .typeError("Número inválido")
+        
+    })
+
+    const { register, handleSubmit, errors } = useForm({
+        resolver: yupResolver(schema)
+    })
     
     return (
         <>
         {props.action=="addEmployee"?<h1>Cadastrar Funcionário</h1>:<h1>Atualizar Dados</h1>}
         
-            <form>
+            <Form onSubmit={handleSubmit(props.action=="addEmployee"?addEmployee:updateEmployee)}>
+            <div>
+                <label>Nome completo</label>
+            </div>
                 <div>
-                    <label>Nome</label>
                     <TextInput
                         type="text"
                         value={inputs.name}
                         name="name"
                         onChange={e => updateFormValue(e)}
-                        required
+                        ref={register}
                     />
+                      
                 </div>
+                <div><p>{errors.name?.message}</p></div>
                 <div>
-                    <label>CPF</label>
+                    <div><label>CPF</label></div>
+                    <div><label>Salário</label></div>
+                </div>
+                
+                <div>
                     <TextInput
                         placeholder="000.000.000-00"
                         type="text"
                         value={inputs.cpf}
                         name="cpf"
                         onChange={e => updateFormValue(e)}
-                        required
+                        ref={register}
                     />
-                </div>
-                <div>
-                    <label>Salário</label>
+                    
+
                     <TextInput
                         type="text"
                         value={inputs.salary}
                         name="salary"
                         onChange={e => updateFormValue(e)}
-                        required
+                        ref={register}
                     />
                 </div>
                 <div>
-                    <label>Desconto</label>
+                    <div><p >{errors.cpf?.message}</p></div>
+                    <div><p >{errors.salary?.message}</p></div>
+                </div>
+                <div>
+                    <div><label>Desconto</label></div>
+                    <div><label>Dependentes</label></div>
+                </div>
+                
+                <div>
                     <TextInput
                         type="text"
                         value={inputs.discount}
                         name="discount"
                         onChange={e => updateFormValue(e)}
-                        required
+                        ref={register}
                     />
-                </div>
-                <div>
-                    <label>Dependentes</label>
+                                        
                     <TextInput
                         type="text"
                         value={inputs.dependents}
                         name="dependents"
                         onChange={e => updateFormValue(e)}
+                        ref={register}
                     />
                 </div>
-            </form>
-            <ContainerButton>
-            {props.action=='updateEmployee'?
-                <ButtonPrimary onClick={updateEmployee} disabled={verifyInput()==true?false:true}>
-                    <FaCheck /> Atualizar
-                </ButtonPrimary>
-                :
-                <ButtonPrimary onClick={addEmployee} disabled={verifyInput()==true?false:true}>
-                    <FaCheck /> Cadastrar
-                </ButtonPrimary>
-            }
-            <div>
-                {verifyInput()==false?<p>Preencha todos os dados</p>:""}
-            </div>
+                <div>
+                    
+                    <div><p>{errors.discount?.message}</p></div>
+                    <div><p>{errors.dependents?.message}</p></div>
+                </div>  
+                <br/>
+                <div className="action">
+                    {
+                    props.action=='updateEmployee'?
+                        <ButtonPrimary type="submit">
+                            <FaCheck /> Atualizar
+                        </ButtonPrimary>
+                        :
+                        <ButtonPrimary type="submit">
+                            <FaCheck /> Cadastrar
+                        </ButtonPrimary>
+                    }
+                </div>
+            </Form>
             
-            </ContainerButton>
         </>
     )
 }

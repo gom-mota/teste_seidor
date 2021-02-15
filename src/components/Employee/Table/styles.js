@@ -13,9 +13,9 @@ export const Action = styled.div`
     }
 
     .delete{
-        color: #bd5151;
+        color: #d94c4c;
     }
     .edit {
-        color: #52984a;
+        color: #49b947;
     }
 `;
